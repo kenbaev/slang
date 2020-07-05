@@ -22,9 +22,12 @@ package org.sonar.go.plugin;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Test;
+import org.sonar.api.internal.SonarRuntimeImpl;
+import org.sonar.api.SonarQubeSide;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.utils.Version;
 import org.sonar.go.externalreport.ExternalKeyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +36,7 @@ public class GoRulesDefinitionTest {
 
   @Test
   public void test() {
-    GoRulesDefinition rulesDefinition = new GoRulesDefinition(false);
+    GoRulesDefinition rulesDefinition = new GoRulesDefinition(false, SonarRuntimeImpl.forSonarQube(Version.create(7,2), SonarQubeSide.SERVER));
     RulesDefinition.Context context = new RulesDefinition.Context();
     rulesDefinition.define(context);
 
@@ -54,7 +57,7 @@ public class GoRulesDefinitionTest {
 
   @Test
   public void test_external_repositories() {
-    GoRulesDefinition rulesDefinition = new GoRulesDefinition(true);
+    GoRulesDefinition rulesDefinition = new GoRulesDefinition(true, SonarRuntimeImpl.forSonarQube(Version.create(7,2), SonarQubeSide.SERVER));
     RulesDefinition.Context context = new RulesDefinition.Context();
     rulesDefinition.define(context);
     RulesDefinition.Repository golintRepository = context.repository("external_golint");
